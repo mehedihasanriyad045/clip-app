@@ -1,0 +1,47 @@
+[package]
+name = "clipapp"
+version = "0.1.0"
+description = "Local clipboard history manager"
+authors = ["Md Mehedi Hasan Riyad"]
+edition = "2021"
+
+[lib]
+name = "clipapp_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-opener = "2"
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-autostart = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.32", features = ["bundled"] }
+sha2 = "0.10"
+arboard = "3"
+image = { version = "0.25", default-features = false, features = ["png"] }
+base64 = "0.22"
+enigo = "0.6.1"
+
+[target.'cfg(windows)'.dependencies]
+# Used to detect the clipboard formats password managers set to opt out of
+# clipboard history. arboard does not expose them.
+windows = { version = "0.61", features = [
+  "Win32_Foundation",
+  "Win32_System_DataExchange",
+] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+# Used to read the clipboard's advertised TARGETS, where KDE and KeePassXC
+# publish a hint marking the content as a password.
+x11rb = "0.13"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true

@@ -1,0 +1,14 @@
+# Normalise to LF in the repository.
+* text=auto eol=lf
+
+# Shell scripts must keep LF endings or they fail on Linux with
+# "bad interpreter: No such file or directory".
+*.sh text eol=lf
+
+# Windows batch files need CRLF.
+*.bat text eol=crlf
+
+*.png binary
+*.ico binary
+*.icns binary
+*.svg text
